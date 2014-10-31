@@ -86,6 +86,20 @@ class Permission(object):
     GRANT_WILDCARD = '*'
     
     @staticmethod
+    def has_any_permission(perm, wild_perm):
+        if Permission.grants_permission(wild_perm, perm):
+            return True
+        return False
+
+    @staticmethod
+    def set_has_any_permission(perms, checked_perm):
+        permissions = []
+        for p in perms:
+            if Permission.has_any_permission(p, checked_perm):
+                permissions.append(p)
+        return permissions
+    
+    @staticmethod
     def grants_permission(wildcard_perm, granted_perm):
         """This is used to see if a permission grants access to a permission which is not in the Core database.
             For instance, when evaluating whether a WildcardPermission grants access to a run-time permission."""
